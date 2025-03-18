@@ -1,10 +1,10 @@
 <?php
-require 'routes/empresa.php';
-require 'routes/usuario.php';
-require 'routes/producto.php';
-require 'routes/cliente.php';
-require 'routes/apertura.php';
-require 'routes/cli_pro_cava.php';
+require '/routes/empresa.php';
+require '/routes/usuario.php';
+require '/routes/producto.php';
+require '/routes/cliente.php';
+require '/routes/apertura.php';
+require '/routes/cli_pro_cava.php';
 
 header('Content-Type: application/json');
 $method = $_SERVER['REQUEST_METHOD'];

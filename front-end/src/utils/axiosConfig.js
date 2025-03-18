@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // Base URL de tu backend
-const BASE_URL = 'http://localhost:3000'; // Cambia esto por la URL de tu backend
+const BASE_URL = 'http://localhost/cavabrew'; // Cambia esto por la URL de tu backend
 
 // Objeto para almacenar peticiones en curso
 const activeRequests = {};
@@ -19,7 +19,7 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const requestId = `${config.url}-${JSON.stringify(config.data)}-${config.method}`;
-
+    console.log(requestId);
     if (activeRequests[requestId]) {
       // Si la petición ya está en curso, devolvemos la misma promesa
       return activeRequests[requestId];
@@ -45,14 +45,21 @@ api.interceptors.request.use(
 
 // Interceptor de respuesta para manejo global de errores
 api.interceptors.response.use(
-  (response) => {
-    return response.data;
-  },
-  (error) => {
-    // Manejo de errores global
-    console.error('Error en la petición:', error.response?.data || error.message);
-    return Promise.reject(error);
-  }
-);
+    (response) => response.data,
+    (error) => {
+      const status = error.response?.status;
+      let errorMessage = 'Ocurrió un error';
+  
+      if (status === 404) {
+        errorMessage = 'Recurso no encontrado';
+      } else if (status === 500) {
+        errorMessage = 'Error en el servidor';
+      }
+  
+      console.error(errorMessage);
+      return Promise.reject(error);
+    }
+  );
+  
 
 export default api;
